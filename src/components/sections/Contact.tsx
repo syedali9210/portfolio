@@ -2,9 +2,19 @@ import Image from "next/image";
 import FooterWave from "@/components/FooterWave";
 
 const CONTACT_INFO = [
-  { label: "Call", icon: "/images/icon.svg", value: "776 586 3700" },
-  { label: "Email", icon: "/images/icon-1.svg", value: "syedwali9286@gmail.com" },
-  { label: "Linkedin", icon: "/images/frame-47.svg", value: "Syed_ali" },
+  { label: "Call", icon: "/images/icon.svg", value: "776 586 3700", href: undefined },
+  {
+    label: "Email",
+    icon: "/images/icon-1.svg",
+    value: "syedwali9286@gmail.com",
+    href: "mailto:syedwali9286@gmail.com",
+  },
+  {
+    label: "Linkedin",
+    icon: "/images/frame-47.svg",
+    value: "Syed_ali",
+    href: "https://www.linkedin.com/in/syedali138/",
+  },
 ];
 
 // Soft top-to-bottom silver gradient shared by every label in the footer.
@@ -28,9 +38,20 @@ export default function Contact() {
                     <div className="relative size-4 shrink-0">
                       <Image src={item.icon} alt="" fill />
                     </div>
-                    <p className="font-pixel text-base tracking-[0.8px] text-[#d1d1d1] sm:text-xl">
-                      {item.value}
-                    </p>
+                    {item.href ? (
+                      <a
+                        href={item.href}
+                        target={item.href.startsWith("http") ? "_blank" : undefined}
+                        rel={item.href.startsWith("http") ? "noopener noreferrer" : undefined}
+                        className="font-pixel text-base tracking-[0.8px] text-[#d1d1d1] underline-offset-2 transition-colors hover:text-white hover:underline sm:text-xl"
+                      >
+                        {item.value}
+                      </a>
+                    ) : (
+                      <p className="font-pixel text-base tracking-[0.8px] text-[#d1d1d1] sm:text-xl">
+                        {item.value}
+                      </p>
+                    )}
                   </div>
                 </div>
               ))}

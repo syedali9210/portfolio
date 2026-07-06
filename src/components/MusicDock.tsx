@@ -59,19 +59,20 @@ export default function MusicDock() {
 
   const handleToggle = () => {
     if (pressing) return;
+    // play()/pause() must fire synchronously inside the click handler —
+    // mobile browsers (iOS Safari in particular) only allow starting
+    // playback directly within a user gesture's call stack. Deferring it
+    // behind a setTimeout, even a few hundred ms, gets silently blocked,
+    // which was why the track never actually played on phones.
+    const audio = audioRef.current;
+    const next = !playing;
+    if (audio) {
+      if (next) audio.play().catch(() => {});
+      else audio.pause();
+    }
     setPressing(true);
     timersRef.current = [
-      setTimeout(() => {
-        setPlaying((p) => {
-          const next = !p;
-          const audio = audioRef.current;
-          if (audio) {
-            if (next) audio.play().catch(() => {});
-            else audio.pause();
-          }
-          return next;
-        });
-      }, TOGGLE_AT_MS),
+      setTimeout(() => setPlaying(next), TOGGLE_AT_MS),
       setTimeout(() => setPressing(false), DONE_AT_MS),
     ];
   };
