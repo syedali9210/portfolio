@@ -50,6 +50,11 @@ const RIGHT_ROW_ICONS = [
   { src: "/images/image-28.png", imgClassName: "object-cover" },
 ];
 
+// Natural rendered height of each side's card stack, so the buddy anchor
+// (below) can be centered at the same height as the fronted card and its
+// top edge lines up with the card's actual top — not a guessed constant.
+const CARD_HEIGHT: Record<Side, number> = { left: 175, center: 0, right: 159 };
+
 export default function HeroMobileStack() {
   const [front, setFront] = useState<Side>("center");
 
@@ -124,12 +129,13 @@ export default function HeroMobileStack() {
     <div className="relative h-[240px] w-full">
       {/* Buddy reactions, mirroring the desktop pairing: the left card gets
           the peeking-and-waving buddy, the right card gets the laptop
-          typing buddy — each active only while its side is fronted. Anchored
-          near the top of the stack (not vertically centered) so the head/
-          laptop always clears above the fronted card instead of getting
-          buried behind it. */}
-      <div className="pointer-events-none absolute inset-x-0 top-4 z-40 flex justify-center">
-        <div className="relative h-px w-[150px]">
+          typing buddy — each active only while its side is fronted. The
+          anchor box is centered the same way the cards are, but sized to
+          match the fronted card's own height, so its top edge lines up
+          with the card's top edge (each buddy's own built-in offset then
+          places it just above, exactly like on desktop). */}
+      <div className="pointer-events-none absolute inset-0 z-40 flex items-center justify-center">
+        <div className="relative w-[150px]" style={{ height: CARD_HEIGHT[front] }}>
           <PeekingBuddy corner="top-left" active={front === "left"} />
           <DeskBuddy active={front === "right"} />
         </div>
