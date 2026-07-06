@@ -112,7 +112,7 @@ export default function CaseStudyKodex() {
             </div>
             <div className="grid w-full grid-cols-1 place-items-center gap-8 sm:grid-cols-2 lg:grid-cols-3">
               {NOTES.map((note) => (
-                <StickyNote key={note.title} src={note.src} title={note.title} />
+                <StickyNote key={note.title} src={note.src} title={note.title} banner />
               ))}
             </div>
           </CaseStudySection>
