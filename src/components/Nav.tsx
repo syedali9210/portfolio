@@ -3,11 +3,14 @@
 import { useEffect, useState, type MouseEvent } from "react";
 import { motion } from "motion/react";
 import { lenisRef } from "@/components/SmoothScroll";
+import { PROJECTS } from "@/data/projects";
 
 // Root-relative hashes so the links work from any page (case studies
-// included), not just the home page.
+// included), not just the home page. "Projects" points straight at the
+// first project card rather than the section top, so it drops the
+// visitor right into the list instead of the pinned title scrub.
 const NAV_ITEMS = [
-  { label: "Projects", href: "/#projects" },
+  { label: "Projects", href: `/#${PROJECTS[0].id}` },
   { label: "My Space", href: "/#my-space" },
   { label: "About me", href: "/#about" },
   { label: "Contact", href: "/#contact" },
@@ -197,18 +200,22 @@ export default function Nav() {
   const topText = topLight ? TEXT_LIGHT_BG : TEXT_DARK_BG;
   const bottomText = bottomLight ? TEXT_LIGHT_BG : TEXT_DARK_BG;
 
-  // When already on the home page, glide to the section through Lenis
-  // instead of letting the browser jump; from other pages the plain
-  // /#hash navigation takes over. Either way the active indicator
-  // switches immediately for instant feedback.
+  // When already on the home page, glide to the section (or, for "/",
+  // back to the very top) through Lenis instead of letting the browser
+  // jump; from other pages the plain href navigation takes over. Either
+  // way the active indicator switches immediately for instant feedback.
   const handleNavClick = (e: MouseEvent<HTMLAnchorElement>, href: string) => {
-    const hash = href.split("#")[1];
-    if (!hash) return;
+    const hash = href.includes("#") ? href.split("#")[1] : null;
     setActive(hash);
     if (window.location.pathname !== "/") return;
+    e.preventDefault();
+    if (!hash) {
+      history.pushState(null, "", "/");
+      lenisRef.current?.scrollTo(0, { offset: 0 });
+      return;
+    }
     const el = document.getElementById(hash);
     if (!el) return;
-    e.preventDefault();
     history.pushState(null, "", `#${hash}`);
     lenisRef.current?.scrollTo(el, { offset: -16 });
   };
@@ -224,9 +231,15 @@ export default function Nav() {
         transition={{ ...NAV_SPRING, delay: 0.15 }}
         className="fixed top-0 left-0 z-50 flex w-full items-center justify-between gap-4 px-5 py-5 sm:px-10 sm:py-6"
       >
-        <p className={`shrink-0 text-base transition-colors duration-500 ${topLight ? "text-[#4a4a4a]" : "text-muted-300"}`}>
+        <motion.a
+          href="/"
+          onClick={(e) => handleNavClick(e, "/")}
+          whileHover={{ scale: 1.05 }}
+          whileTap={{ scale: 0.95 }}
+          className={`shrink-0 text-base transition-colors duration-500 ${topText}`}
+        >
           Syed.Ali
-        </p>
+        </motion.a>
 
         <nav
           className={`hidden max-w-full items-center gap-10 rounded-2xl border-[0.5px] bg-gradient-to-b px-4 py-1.5 backdrop-blur-[48px] transition-all duration-500 md:flex lg:gap-24 ${
