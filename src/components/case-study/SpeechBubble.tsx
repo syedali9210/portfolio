@@ -15,9 +15,13 @@ export default function SpeechBubble({
   return (
     <div className="relative aspect-[235/225] w-full max-w-[240px]">
       <Image src={src} alt="" fill className="pointer-events-none" />
-      <div className="relative z-10 flex h-full flex-col gap-2 px-5 pt-4 pb-8">
+      <div className="relative z-10 flex h-full flex-col px-5 pt-4 pb-8">
         <p className="text-center font-pixel-square text-base text-black">{title}</p>
-        <ul className="list-disc space-y-1.5 pl-4 font-pixel-square text-[11px] leading-tight text-black">
+        {/* The artwork's tag/pointer (~top 17%) connects to its wide body
+            via a thin, mostly-transparent stem — text placed right after
+            the title lands in that stem instead of the colored body, so
+            this pushes the list down into the actual body area. */}
+        <ul className="mt-16 list-disc space-y-1.5 pl-4 font-pixel-square text-[11px] leading-tight text-black">
           {quotes.map((quote) => (
             <li key={quote}>{quote}</li>
           ))}
