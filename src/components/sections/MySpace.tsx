@@ -1,6 +1,8 @@
 "use client";
 
 import { useState } from "react";
+import GlassTile from "@/components/GlassTile";
+import PetBuddy from "@/components/PetBuddy";
 import ShapePill from "@/components/ShapePill";
 import SupermoveCard from "@/components/SupermoveCard";
 
@@ -32,14 +34,12 @@ export default function MySpace() {
           </p>
           <div className="relative w-full">
             <CarouselIndicator className="absolute top-1/2 -left-16 hidden -translate-y-1/2 lg:flex" />
-            <div className="h-[220px] w-full rounded-lg bg-[#808080] sm:h-[291px]" />
+            <GlassTile empty className="h-[220px] w-full sm:h-[291px]">
+              <PetBuddy />
+            </GlassTile>
           </div>
           <p className="font-pixel-triangle text-sm leading-relaxed text-muted-500 sm:text-base">
-            Rapid prototyping is basically my excuse to build random ideas that
-            absolutely didn&rsquo;t need to exist. Some worked, some humbled me
-            real quick (free character development), but every prototype taught
-            me something new about interactions, motion, and how ideas
-            actually feel once they&rsquo;re out of Figma.
+            Making my own buddy pet for my portfolio.
           </p>
         </div>
       ) : (
