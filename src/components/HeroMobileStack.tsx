@@ -3,6 +3,7 @@
 import Image from "next/image";
 import { useState } from "react";
 import { motion } from "motion/react";
+import DeskBuddy from "@/components/DeskBuddy";
 import GlassPanel from "@/components/GlassPanel";
 import GlassTile from "@/components/GlassTile";
 import PeekingBuddy from "@/components/PeekingBuddy";
@@ -51,9 +52,6 @@ const RIGHT_ROW_ICONS = [
 
 export default function HeroMobileStack() {
   const [front, setFront] = useState<Side>("center");
-  // Buddy perks up the moment a side card is brought forward, and settles
-  // back down once the stack returns to its default (center-front) state.
-  const swiped = front !== "center";
 
   const groups: { side: Side; node: React.ReactNode }[] = [
     {
@@ -124,12 +122,16 @@ export default function HeroMobileStack() {
 
   return (
     <div className="relative h-[240px] w-full">
-      {/* Peeks up from behind the fan and waves while a side card is
-          fronted; sits below the cards (z-0) so it reads as popping up
-          from behind the stack rather than sitting on top of it. */}
-      <div className="pointer-events-none absolute inset-0 flex items-center justify-center">
-        <div className="relative h-[128px] w-[124px]">
-          <PeekingBuddy corner="top-right" active={swiped} />
+      {/* Buddy reactions, mirroring the desktop pairing: the left card gets
+          the peeking-and-waving buddy, the right card gets the laptop
+          typing buddy — each active only while its side is fronted. Anchored
+          near the top of the stack (not vertically centered) so the head/
+          laptop always clears above the fronted card instead of getting
+          buried behind it. */}
+      <div className="pointer-events-none absolute inset-x-0 top-4 z-40 flex justify-center">
+        <div className="relative h-px w-[150px]">
+          <PeekingBuddy corner="top-left" active={front === "left"} />
+          <DeskBuddy active={front === "right"} />
         </div>
       </div>
 
