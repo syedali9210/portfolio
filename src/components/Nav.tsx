@@ -11,8 +11,8 @@ import { PROJECTS } from "@/data/projects";
 // visitor right into the list instead of the pinned title scrub.
 const NAV_ITEMS = [
   { label: "Projects", href: `/#${PROJECTS[0].id}` },
-  { label: "My Space", href: "/#my-space" },
   { label: "About me", href: "/#about" },
+  { label: "My Space", href: "/#my-space" },
   { label: "Contact", href: "/#contact" },
 ];
 

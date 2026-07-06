@@ -4,6 +4,7 @@ import GlassPanel from "@/components/GlassPanel";
 import GlassTile from "@/components/GlassTile";
 import HeroGlow from "@/components/HeroGlow";
 import HeroMobileStack from "@/components/HeroMobileStack";
+import MusicDock from "@/components/MusicDock";
 import PetBuddy from "@/components/PetBuddy";
 import TiltCard from "@/components/TiltCard";
 import DeskBuddyCard from "@/components/DeskBuddyCard";
@@ -130,17 +131,9 @@ export default function Hero() {
       </div>
 
       {/* Music player: compact round sound button at bottom-left on mobile
-          (the bottom nav owns the center); full bar centered on md+ */}
-      <div className="absolute bottom-22 left-6 z-10 flex items-center gap-2 rounded-[27px] border-[0.5px] border-white/26 bg-white/10 p-2.5 shadow-[0px_5px_5px_rgba(0,0,0,0.16)] md:bottom-8 md:left-1/2 md:w-[calc(100%-3rem)] md:max-w-[280px] md:-translate-x-1/2 md:rounded-[10px]">
-        <div className="relative size-5 shrink-0 md:size-10">
-          <Image src="/images/app-icons-music.svg" alt="" fill />
-        </div>
-        <p className="hidden min-w-0 flex-1 truncate text-[13px] tracking-[-0.08px] text-white md:block">
-          Moth to a Flame
-        </p>
-        <span className="hidden shrink-0 text-[13px] text-white/55 md:inline">▶</span>
-        <span className="hidden shrink-0 text-[11px] text-white/26 md:inline">▶▶</span>
-      </div>
+          (the bottom nav owns the center); full bar centered on md+.
+          Clicking the icon summons Boop to press it. */}
+      <MusicDock />
     </section>
   );
 }
