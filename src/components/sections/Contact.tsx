@@ -40,7 +40,7 @@ export default function Contact() {
           <div className="flex flex-col gap-6 md:h-[132px] md:items-end md:justify-between md:text-right">
             <p className={`${LABEL} text-lg sm:text-xl`}>Design Engineer</p>
             <p className={`${LABEL} max-w-[353px] text-lg leading-relaxed sm:text-xl`}>
-              You have been here till the end of the journey, lets have a talk now
+              You have been here till the end of the journey, lets have a conversation now.
             </p>
           </div>
         </div>

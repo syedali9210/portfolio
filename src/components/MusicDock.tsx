@@ -53,6 +53,7 @@ export default function MusicDock() {
   const [playing, setPlaying] = useState(false);
   const [pressing, setPressing] = useState(false);
   const timersRef = useRef<ReturnType<typeof setTimeout>[]>([]);
+  const audioRef = useRef<HTMLAudioElement>(null);
 
   useEffect(() => () => timersRef.current.forEach(clearTimeout), []);
 
@@ -60,13 +61,24 @@ export default function MusicDock() {
     if (pressing) return;
     setPressing(true);
     timersRef.current = [
-      setTimeout(() => setPlaying((p) => !p), TOGGLE_AT_MS),
+      setTimeout(() => {
+        setPlaying((p) => {
+          const next = !p;
+          const audio = audioRef.current;
+          if (audio) {
+            if (next) audio.play().catch(() => {});
+            else audio.pause();
+          }
+          return next;
+        });
+      }, TOGGLE_AT_MS),
       setTimeout(() => setPressing(false), DONE_AT_MS),
     ];
   };
 
   return (
     <div className="absolute bottom-22 left-6 z-10 flex items-center gap-2 rounded-[27px] border-[0.5px] border-white/26 bg-white/10 p-2.5 shadow-[0px_5px_5px_rgba(0,0,0,0.16)] md:bottom-8 md:left-1/2 md:w-[calc(100%-3rem)] md:max-w-[280px] md:-translate-x-1/2 md:rounded-[10px]">
+      <audio ref={audioRef} src="/audio/music-portfolio.mp3" loop preload="none" />
       <div className="relative shrink-0">
         {/* Boop pops up from behind the dock to press play */}
         <AnimatePresence>

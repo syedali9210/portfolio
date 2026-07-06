@@ -33,11 +33,15 @@ export default function Projects() {
       // beat, then "projects" rises up from off-screen at the bottom,
       // grows large enough to fill the screen width, then shrinks back
       // down to its normal size as it settles near the top.
+      // Shorter on narrow (mobile) viewports — the same 1100px of scroll
+      // is a much bigger chunk of a short mobile viewport, so the "nothing
+      // is happening yet" stretch felt broken there.
+      const pinDistance = window.innerWidth < 768 ? 650 : 1100;
       const tl = gsap.timeline({
         scrollTrigger: {
           trigger: titleWrapRef.current,
           start: "top top",
-          end: "+=1100",
+          end: "+=" + pinDistance,
           scrub: true,
           pin: true,
         },

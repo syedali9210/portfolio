@@ -44,9 +44,9 @@ export default function Hero() {
 
       <div className="relative z-10 flex w-full max-w-3xl flex-col items-center text-center">
         <p className="font-pixel-square text-base leading-relaxed text-muted-600 sm:text-lg md:text-xl">
-          The guy that design things and bring them to life,
+          The guy who designs things and brings them to life,
           <br className="hidden sm:block" />
-          {" cuz why not, engineering made me things do the "}
+          {" cuz why not — engineering taught me to do things the "}
           <span className="font-body underline decoration-wavy decoration-[3.5%] underline-offset-2">
             unconventional
           </span>
