@@ -39,7 +39,25 @@ export default function MySpace() {
             </GlassTile>
           </div>
           <p className="font-pixel-triangle text-sm leading-relaxed text-muted-500 sm:text-base">
-            Making my own buddy pet for my portfolio.
+            From developing my own portfolio to making my own pet buddy like{" "}
+            <em>Claude</em>, this idea came to my mind while i was glued to my
+            desk while making my portfolio with my earphones on.
+            <br />
+            <br />
+            The pet buddy is currently at version 0.1 — it still needs
+            refinement and work to make it awesome, which i will use it on my
+            portfolio and my experiment sites that absolutely makes sense to
+            me at 3:00 am in the morning.
+            <br />
+            <br />
+            There are some hidden animations of the pet buddy across my
+            portfolio, which you can see while hovering over the elements.
+            <br />
+            <br />
+            I want to make my pet buddy a completely banger pet buddy. The
+            upcoming version of it will have better interactions, animation,
+            more texture and more feelings to it, stay tuned to see the Pet
+            Buddy coming fully alive :)
           </p>
         </div>
       ) : (
