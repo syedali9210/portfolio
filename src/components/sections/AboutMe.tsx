@@ -131,25 +131,53 @@ const BRAIN_PIECES = [
   { src: "/about/brain/pcb.png", left: 75.6, top: 58.8, width: 23.5, height: 39.1, radius: 0 },
 ];
 
+// The collage's own aspect ratio (349x279, ~1.25 — wider than tall). The
+// card slots that host it range from wide-and-short (the mobile deck,
+// 167x222) to tall-and-narrow (the desktop expanded slot), so stretching
+// the collage to always fill `size-full` distorted it badly in some of
+// them. This measures whatever box it's actually given and fits the
+// collage's true proportions inside it (letterboxed, never stretched).
+const BRAIN_RATIO = 349 / 279;
+
 function BrainCollage() {
+  const wrapRef = useRef<HTMLDivElement>(null);
+  const [size, setSize] = useState({ w: 0, h: 0 });
+
+  useEffect(() => {
+    const el = wrapRef.current;
+    if (!el) return;
+    const fit = () => {
+      const { width, height } = el.getBoundingClientRect();
+      if (width <= 0 || height <= 0) return;
+      const w = width / height > BRAIN_RATIO ? height * BRAIN_RATIO : width;
+      setSize({ w, h: w / BRAIN_RATIO });
+    };
+    fit();
+    const ro = new ResizeObserver(fit);
+    ro.observe(el);
+    return () => ro.disconnect();
+  }, []);
+
   return (
-    <div className="relative size-full overflow-hidden rounded-xl">
-      {BRAIN_PIECES.map((p) => (
-        <div
-          key={p.src}
-          className="absolute overflow-hidden"
-          style={{
-            left: `${p.left}%`,
-            top: `${p.top}%`,
-            width: `${p.width}%`,
-            height: `${p.height}%`,
-            borderRadius: p.radius,
-            rotate: p.rotate ? `${p.rotate}deg` : undefined,
-          }}
-        >
-          <Image src={p.src} alt="" fill sizes="250px" className="object-cover" />
-        </div>
-      ))}
+    <div ref={wrapRef} className="flex size-full items-center justify-center overflow-hidden rounded-xl">
+      <div className="relative shrink-0" style={{ width: size.w, height: size.h }}>
+        {BRAIN_PIECES.map((p) => (
+          <div
+            key={p.src}
+            className="absolute overflow-hidden"
+            style={{
+              left: `${p.left}%`,
+              top: `${p.top}%`,
+              width: `${p.width}%`,
+              height: `${p.height}%`,
+              borderRadius: p.radius,
+              rotate: p.rotate ? `${p.rotate}deg` : undefined,
+            }}
+          >
+            <Image src={p.src} alt="" fill sizes="250px" className="object-cover" />
+          </div>
+        ))}
+      </div>
     </div>
   );
 }
