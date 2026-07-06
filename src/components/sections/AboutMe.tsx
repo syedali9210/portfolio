@@ -2,7 +2,7 @@
 
 import { useEffect, useRef, useState, type CSSProperties } from "react";
 import Image from "next/image";
-import { AnimatePresence, motion, useInView } from "motion/react";
+import { AnimatePresence, animate, motion, useInView, useMotionValue } from "motion/react";
 import GlassPanel from "@/components/GlassPanel";
 
 type CardId = "experience" | "sidequests" | "brain" | "compiling";
@@ -84,7 +84,14 @@ const CARDS: Card[] = [
     tabLabel: "Side quests",
     image: "/about/side-quest.webp",
     panelTitle: "Side quests",
-    panelContent: ["Still building this one out — check back soon."],
+    panelContent: [
+      "When I'm not designing...",
+      "You'll probably find me",
+      "exploring cafés",
+      "convincing myself leg day isn't tomorrow",
+      "replaying the same song for the 37th time",
+      "building something nobody asked for.",
+    ],
     enter: { x: -260, y: 90, extraRotate: -24 },
   },
   {
@@ -105,7 +112,15 @@ const CARDS: Card[] = [
     id: "brain",
     tabLabel: "Inside my brain",
     panelTitle: "Inside my brain",
-    panelContent: ["Still building this one out — check back soon."],
+    panelContent: [
+      "Current thoughts...",
+      "Can this be one click instead of three?",
+      "Does this animation actually help?",
+      "Can AI do the boring part?",
+      "Should this even exist?",
+      "Token maxxing..",
+      "Push to git plss.",
+    ],
     enter: { x: 240, y: -100, extraRotate: 22 },
   },
   {
@@ -113,7 +128,14 @@ const CARDS: Card[] = [
     tabLabel: "Compiling",
     image: "/about/experience-bg.png",
     panelTitle: "Compiling",
-    panelContent: ["Still building this one out — check back soon."],
+    panelContent: [
+      "I like seeing ideas all the way through.",
+      "From messy sticky notes,",
+      "to polished interfaces,",
+      "to writing the code behind them.",
+      `Because "looks good in Figma"`,
+      "is only half the job.",
+    ],
     enter: { x: -140, y: 140, extraRotate: -18 },
   },
 ];
@@ -212,6 +234,26 @@ export default function AboutMe() {
   const cycleDeck = () => setDeck((prev) => [...prev.slice(1), prev[0]]);
   const bringToTop = (id: CardId) =>
     setDeck((prev) => (prev[0] === id ? prev : [id, ...prev.filter((x) => x !== id)]));
+
+  // The deck's horizontal offset is driven by its own motion values (one
+  // per card, kept alive across re-renders) instead of the `animate` prop.
+  // `drag` writes straight into a card's x while dragging; if a swipe falls
+  // short, `animate` on this same value snaps it back to its resting pose —
+  // unlike the `animate` prop, which only restarts when its target actually
+  // changes, so a released-but-unswiped card just stayed wherever it was
+  // dropped (and, still holding the top z-index, ate every swipe after it).
+  const deckX = {
+    sidequests: useMotionValue(DECK_POSES[deck.indexOf("sidequests")].x),
+    experience: useMotionValue(DECK_POSES[deck.indexOf("experience")].x),
+    brain: useMotionValue(DECK_POSES[deck.indexOf("brain")].x),
+    compiling: useMotionValue(DECK_POSES[deck.indexOf("compiling")].x),
+  } as const;
+  useEffect(() => {
+    deck.forEach((id, depth) => {
+      animate(deckX[id], DECK_POSES[depth].x, { type: "spring", stiffness: 200, damping: 22 });
+    });
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [deck]);
   const liftTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
   useEffect(() => () => {
     if (liftTimer.current) clearTimeout(liftTimer.current);
@@ -437,17 +479,22 @@ export default function AboutMe() {
                 drag={isTop ? "x" : false}
                 dragElastic={0.6}
                 onDragEnd={(_, info) => {
-                  if (Math.abs(info.offset.x) > SWIPE_THRESHOLD) cycleDeck();
+                  if (Math.abs(info.offset.x) > SWIPE_THRESHOLD) {
+                    cycleDeck();
+                  } else {
+                    animate(deckX[card.id], pose.x, { type: "spring", stiffness: 200, damping: 22 });
+                  }
                 }}
-                animate={{ x: pose.x, rotate: pose.rotate, scale: pose.scale }}
+                animate={{ rotate: pose.rotate, scale: pose.scale }}
                 transition={{ type: "spring", stiffness: 200, damping: 22 }}
-                className="absolute top-1/2 left-1/2 h-[222px] w-[167px]"
                 style={{
+                  x: deckX[card.id],
                   marginLeft: -83.5,
                   marginTop: -111,
                   zIndex: 40 - depth * 10,
                   touchAction: "pan-y",
                 }}
+                className="absolute top-1/2 left-1/2 h-[222px] w-[167px]"
               >
                 <div className="size-full overflow-hidden rounded-2xl border-[0.5px] border-white/26 bg-gradient-to-b from-white/10 to-[#999999]/10 p-3 shadow-[0px_10px_5px_rgba(0,0,0,0.15)] backdrop-blur-[48px]">
                   {card.image ? (

@@ -29,7 +29,7 @@ function CardBody({ project }: { project: Project }) {
         </div>
 
         <ShapePill src={project.categoryPill} className="h-8 w-[126px]" textClassName="text-black text-sm">
-          Product Design
+          {project.categoryLabel}
         </ShapePill>
 
         <p className="font-pixel text-lg text-white sm:text-xl">{project.description}</p>

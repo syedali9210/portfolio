@@ -8,6 +8,7 @@ export type Project = {
   image: string;
   borderColor: string;
   categoryPill: string;
+  categoryLabel: string;
   description: string;
   hasCaseStudy: boolean;
 };
@@ -23,6 +24,7 @@ export const PROJECTS: Project[] = [
     image: "/images/frame-7.png",
     borderColor: "border-[#f3f3f3]",
     categoryPill: "/images/subtract-airtribe-tag.svg",
+    categoryLabel: "Product Design",
     description:
       "Designed an AI experience for the users to ease their learning experience through out the site.",
     hasCaseStudy: true,
@@ -37,6 +39,7 @@ export const PROJECTS: Project[] = [
     image: "/images/kodex-screenshot.png",
     borderColor: "border-[#f3f3f3]",
     categoryPill: "/images/subtract-kodex-tag.svg",
+    categoryLabel: "Website redesign",
     description: "Redesigning Kodex's digital experience for enterprise customers.",
     hasCaseStudy: true,
   },
@@ -50,6 +53,7 @@ export const PROJECTS: Project[] = [
     image: "/images/uniqkey-screenshot.png",
     borderColor: "border-[#7a7a7a]",
     categoryPill: "/images/subtract-uniqkey-tag.svg",
+    categoryLabel: "Website design",
     description: "Designing a landing page that turns security awareness into action.",
     hasCaseStudy: true,
   },

@@ -134,10 +134,24 @@ function BuddyFront({ waving }: { waving: boolean }) {
   );
 }
 
+const SEEN_KEY = "boop-preloader-seen";
+
 export default function Preloader() {
   const [phase, setPhase] = useState<Phase>("walk");
+  // Starts hidden on both server and first client render (so there's no
+  // hydration mismatch), then flips on in an effect only for a device's
+  // very first visit — every later page load, including navigating back
+  // from a case study, skips straight past it.
+  const [show, setShow] = useState(false);
 
   useEffect(() => {
+    if (localStorage.getItem(SEEN_KEY)) return;
+    localStorage.setItem(SEEN_KEY, "1");
+    setShow(true);
+  }, []);
+
+  useEffect(() => {
+    if (!show) return;
     const timers = [
       setTimeout(() => setPhase("turn"), WALK_MS),
       setTimeout(() => setPhase("wave"), WALK_MS + TURN_MS),
@@ -145,9 +159,9 @@ export default function Preloader() {
       setTimeout(() => setPhase("done"), WALK_MS + TURN_MS + WAVE_MS + EXIT_MS),
     ];
     return () => timers.forEach(clearTimeout);
-  }, []);
+  }, [show]);
 
-  if (phase === "done") return null;
+  if (!show || phase === "done") return null;
 
   const front = phase !== "walk";
 

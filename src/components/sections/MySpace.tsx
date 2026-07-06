@@ -1,22 +1,12 @@
 "use client";
 
 import { useState } from "react";
+import GlassPanel from "@/components/GlassPanel";
 import GlassTile from "@/components/GlassTile";
 import PetBuddy from "@/components/PetBuddy";
-import ShapePill from "@/components/ShapePill";
 import SupermoveCard from "@/components/SupermoveCard";
 
 type Tab = "blogs" | "archive";
-
-function CarouselIndicator({ className = "" }: { className?: string }) {
-  return (
-    <div className={`flex flex-col items-start gap-2.5 ${className}`}>
-      <span className="h-2.5 w-13 rounded-full bg-[#d9d9d9]" />
-      <span className="h-2.5 w-8 rounded-full bg-[#d9d9d9]" />
-      <span className="h-2.5 w-8 rounded-full bg-[#d9d9d9]" />
-    </div>
-  );
-}
 
 export default function MySpace() {
   const [tab, setTab] = useState<Tab>("blogs");
@@ -33,7 +23,6 @@ export default function MySpace() {
             Rapid Prototyping
           </p>
           <div className="relative w-full">
-            <CarouselIndicator className="absolute top-1/2 -left-16 hidden -translate-y-1/2 lg:flex" />
             <GlassTile empty className="h-[220px] w-full sm:h-[291px]">
               <PetBuddy />
             </GlassTile>
@@ -73,34 +62,27 @@ export default function MySpace() {
         </div>
       )}
 
-      <div className="mt-16 flex items-center justify-center gap-9">
-        {tab === "blogs" ? (
-          <>
-            <ShapePill src="/images/subtract-4.svg" className="h-10 w-[115px]" textClassName="text-black text-lg sm:text-xl">
-              Blogs
-            </ShapePill>
-            <button
-              type="button"
-              onClick={() => setTab("archive")}
-              className="font-pixel text-lg text-white transition-opacity hover:opacity-70 sm:text-xl"
-            >
-              Archive
-            </button>
-          </>
-        ) : (
-          <>
-            <ShapePill src="/images/subtract-4.svg" className="h-10 w-[115px]" textClassName="text-black text-lg sm:text-xl">
-              Archive
-            </ShapePill>
-            <button
-              type="button"
-              onClick={() => setTab("blogs")}
-              className="font-pixel text-lg text-white transition-opacity hover:opacity-70 sm:text-xl"
-            >
-              Blogs
-            </button>
-          </>
-        )}
+      <div className="mt-16 flex justify-center">
+        <GlassPanel className="flex items-center gap-[34px] px-5 py-2.5">
+          <button
+            type="button"
+            onClick={() => setTab("blogs")}
+            className={`text-sm font-medium tracking-[-0.08px] transition-colors ${
+              tab === "blogs" ? "text-white" : "text-[#a6a6a6] hover:text-white"
+            }`}
+          >
+            Blogs
+          </button>
+          <button
+            type="button"
+            onClick={() => setTab("archive")}
+            className={`text-sm font-medium tracking-[-0.08px] transition-colors ${
+              tab === "archive" ? "text-white" : "text-[#a6a6a6] hover:text-white"
+            }`}
+          >
+            Archive
+          </button>
+        </GlassPanel>
       </div>
     </section>
   );
