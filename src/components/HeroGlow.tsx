@@ -11,7 +11,9 @@ if (typeof window !== "undefined") {
   // scrolls to 0 to remeasure trigger positions. If a user clicks a hash
   // nav link right around then, that remeasure stomps the browser's
   // native scroll-to-anchor and can leave the page stuck at the top.
-  ScrollTrigger.config({ autoRefreshEvents: "DOMContentLoaded,visibilitychange" });
+  // "resize" stays in the list so pinned sections re-measure when the
+  // viewport changes (orientation flips, window resizes).
+  ScrollTrigger.config({ autoRefreshEvents: "DOMContentLoaded,visibilitychange,resize" });
 }
 
 export default function HeroGlow({ children }: { children: React.ReactNode }) {

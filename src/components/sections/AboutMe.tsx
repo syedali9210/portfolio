@@ -82,7 +82,7 @@ const CARDS: Card[] = [
   {
     id: "sidequests",
     tabLabel: "Side quests",
-    image: "/about/side-quest.png",
+    image: "/about/side-quest.webp",
     panelTitle: "Side quests",
     panelContent: ["Still building this one out — check back soon."],
     enter: { x: -260, y: 90, extraRotate: -24 },
@@ -329,7 +329,7 @@ export default function AboutMe() {
                       src={card.image}
                       alt={card.tabLabel}
                       fill
-                      sizes="(min-width: 768px) 45vw, 100vw"
+                      sizes="440px"
                       className="object-cover"
                     />
                   </div>

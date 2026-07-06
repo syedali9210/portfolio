@@ -244,7 +244,7 @@ export default function CaseStudyAirtribe() {
                 rightText="Redesigned the hero around a stronger value proposition with supporting visuals and clear CTAs."
               >
                 <div className="relative aspect-[938/661] w-full overflow-hidden rounded-2xl">
-                  <Image src="/images/cs-image-12.png" alt="AI learning companion" fill className="object-cover" />
+                  <Image src="/images/cs-image-12.png" alt="AI learning companion" fill sizes="(min-width: 1024px) 950px, 100vw" className="object-cover" />
                 </div>
                 <div className="flex flex-col items-start gap-4">
                   <p className="font-body w-full text-2xl font-semibold text-white sm:text-3xl">Impact</p>
@@ -263,13 +263,13 @@ export default function CaseStudyAirtribe() {
                 <div className="flex flex-col items-center gap-8 sm:flex-row sm:justify-center">
                   <div className="flex w-full max-w-[420px] flex-col items-center gap-4">
                     <div className="relative aspect-[514/261] w-full overflow-hidden rounded-md border-[0.5px] border-[#b8b8b8]">
-                      <Image src="/images/cs-screenshot-before.png" alt="Before" fill className="object-cover" />
+                      <Image src="/images/cs-screenshot-before.png" alt="Before" fill sizes="(min-width: 1024px) 950px, 100vw" className="object-cover" />
                     </div>
                     <p className="font-body text-lg font-semibold text-[#d7d7d7]">Before</p>
                   </div>
                   <div className="flex w-full max-w-[420px] flex-col items-center gap-4">
                     <div className="relative aspect-[516/262] w-full overflow-hidden rounded-md border-[0.5px] border-[#b8b8b8]">
-                      <Image src="/images/cs-image-5-after.png" alt="After" fill className="object-cover" />
+                      <Image src="/images/cs-image-5-after.png" alt="After" fill sizes="(min-width: 1024px) 950px, 100vw" className="object-cover" />
                     </div>
                     <p className="font-body text-lg font-semibold text-[#d7d7d7]">After</p>
                   </div>
@@ -290,16 +290,16 @@ export default function CaseStudyAirtribe() {
               >
                 <div className="grid w-full grid-cols-1 gap-4 sm:grid-cols-2">
                   <div className="relative aspect-[510/198] w-full overflow-hidden rounded-md">
-                    <Image src="/images/cs-ai-curated-section.png" alt="AI curated section" fill className="object-cover" />
+                    <Image src="/images/cs-ai-curated-section.png" alt="AI curated section" fill sizes="(min-width: 1024px) 950px, 100vw" className="object-cover" />
                   </div>
                   <div className="relative aspect-[792/250] w-full overflow-hidden rounded-md bg-white">
-                    <Image src="/images/cs-quick-notes.png" alt="Quick notes" fill className="object-contain p-2" />
+                    <Image src="/images/cs-quick-notes.png" alt="Quick notes" fill sizes="(min-width: 1024px) 950px, 100vw" className="object-contain p-2" />
                   </div>
                   <div className="relative aspect-[792/231] w-full overflow-hidden rounded-md bg-white">
-                    <Image src="/images/cs-container.png" alt="Workspace container" fill className="object-contain p-2" />
+                    <Image src="/images/cs-container.png" alt="Workspace container" fill sizes="(min-width: 1024px) 950px, 100vw" className="object-contain p-2" />
                   </div>
                   <div className="relative aspect-[532/187] w-full overflow-hidden rounded-md bg-white">
-                    <Image src="/images/cs-projects-mock.png" alt="Projects" fill className="object-contain p-2" />
+                    <Image src="/images/cs-projects-mock.png" alt="Projects" fill sizes="(min-width: 1024px) 950px, 100vw" className="object-contain p-2" />
                   </div>
                 </div>
               </SolutionBlock>
@@ -313,13 +313,13 @@ export default function CaseStudyAirtribe() {
               >
                 <div className="grid w-full grid-cols-1 gap-4 sm:grid-cols-3">
                   <div className="relative aspect-[1212/643] w-full overflow-hidden rounded-md">
-                    <Image src="/images/cs-image-6.png" alt="" fill className="object-cover" />
+                    <Image src="/images/cs-image-6.png" alt="" fill sizes="(min-width: 1024px) 950px, 100vw" className="object-cover" />
                   </div>
                   <div className="relative aspect-[525/281] w-full overflow-hidden rounded-md border-[0.45px] border-[#b6b6b6]">
-                    <Image src="/images/cs-image-12.png" alt="" fill className="object-cover" />
+                    <Image src="/images/cs-image-12.png" alt="" fill sizes="(min-width: 1024px) 950px, 100vw" className="object-cover" />
                   </div>
                   <div className="relative aspect-[1025/752] w-full overflow-hidden rounded-md">
-                    <Image src="/images/cs-image-7.png" alt="" fill className="object-cover" />
+                    <Image src="/images/cs-image-7.png" alt="" fill sizes="(min-width: 1024px) 950px, 100vw" className="object-cover" />
                   </div>
                 </div>
                 <div className="flex flex-col items-start gap-4">

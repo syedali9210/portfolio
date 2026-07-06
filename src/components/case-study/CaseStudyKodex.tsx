@@ -151,7 +151,7 @@ export default function CaseStudyKodex() {
                 rightText="Redesigned the hero with stronger messaging, supporting visuals, and clear primary actions to immediately explain the platform."
               >
                 <div className="relative aspect-[1060/558] w-full overflow-hidden rounded-2xl">
-                  <Image src="/images/kx-hero-image.png" alt="Kodex hero redesign" fill className="object-cover" />
+                  <Image src="/images/kx-hero-image.png" alt="Kodex hero redesign" fill sizes="(min-width: 1024px) 950px, 100vw" className="object-cover" />
                 </div>
                 <div className="flex flex-col items-start gap-4">
                   <p className="font-body w-full text-2xl font-semibold text-white sm:text-3xl">Why it works</p>
@@ -169,13 +169,13 @@ export default function CaseStudyKodex() {
               >
                 <div className="grid w-full grid-cols-1 gap-4 sm:grid-cols-2">
                   <div className="relative aspect-[381/309] w-full overflow-hidden rounded-md">
-                    <Image src="/images/kx-nav-frame2.png" alt="" fill className="object-cover" />
+                    <Image src="/images/kx-nav-frame2.png" alt="" fill sizes="(min-width: 1024px) 950px, 100vw" className="object-cover" />
                   </div>
                   <div className="relative aspect-[332/348] w-full overflow-hidden rounded-md">
-                    <Image src="/images/kx-nav-frame1.png" alt="" fill className="object-cover" />
+                    <Image src="/images/kx-nav-frame1.png" alt="" fill sizes="(min-width: 1024px) 950px, 100vw" className="object-cover" />
                   </div>
                   <div className="relative aspect-[851/298] w-full overflow-hidden rounded-md sm:col-span-2">
-                    <Image src="/images/kx-nav-image9.png" alt="" fill className="object-cover" />
+                    <Image src="/images/kx-nav-image9.png" alt="" fill sizes="(min-width: 1024px) 950px, 100vw" className="object-cover" />
                   </div>
                 </div>
                 <div className="flex flex-col items-start gap-4">
@@ -194,10 +194,10 @@ export default function CaseStudyKodex() {
               >
                 <div className="flex flex-col items-center gap-4 sm:flex-row sm:justify-center">
                   <div className="relative aspect-[450/230] w-full max-w-[450px] overflow-hidden rounded-[10px]">
-                    <Image src="/images/kx-story-image10.png" alt="" fill className="object-cover" />
+                    <Image src="/images/kx-story-image10.png" alt="" fill sizes="(min-width: 1024px) 950px, 100vw" className="object-cover" />
                   </div>
                   <div className="relative aspect-[530/208] w-full max-w-[530px] overflow-hidden rounded-[10px]">
-                    <Image src="/images/kx-story-image11.png" alt="" fill className="object-cover" />
+                    <Image src="/images/kx-story-image11.png" alt="" fill sizes="(min-width: 1024px) 950px, 100vw" className="object-cover" />
                   </div>
                 </div>
                 <div className="flex flex-col items-start gap-4">
@@ -218,16 +218,16 @@ export default function CaseStudyKodex() {
               >
                 <div className="grid w-full grid-cols-1 gap-4 sm:grid-cols-2">
                   <div className="relative aspect-[238/190] w-full overflow-hidden rounded-md">
-                    <Image src="/images/kx-trust-chart.png" alt="" fill className="object-cover" />
+                    <Image src="/images/kx-trust-chart.png" alt="" fill sizes="(min-width: 1024px) 950px, 100vw" className="object-cover" />
                   </div>
                   <div className="relative aspect-[313/78] w-full overflow-hidden rounded-md">
-                    <Image src="/images/kx-trust-frame1.png" alt="" fill className="object-cover" />
+                    <Image src="/images/kx-trust-frame1.png" alt="" fill sizes="(min-width: 1024px) 950px, 100vw" className="object-cover" />
                   </div>
                   <div className="relative aspect-[313/75] w-full overflow-hidden rounded-md">
-                    <Image src="/images/kx-trust-frame3.png" alt="" fill className="object-cover" />
+                    <Image src="/images/kx-trust-frame3.png" alt="" fill sizes="(min-width: 1024px) 950px, 100vw" className="object-cover" />
                   </div>
                   <div className="relative aspect-[246/88] w-full overflow-hidden rounded-md">
-                    <Image src="/images/kx-trust-frame2.png" alt="" fill className="object-cover" />
+                    <Image src="/images/kx-trust-frame2.png" alt="" fill sizes="(min-width: 1024px) 950px, 100vw" className="object-cover" />
                   </div>
                 </div>
                 <div className="flex flex-col items-start gap-4">

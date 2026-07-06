@@ -148,7 +148,7 @@ export default function CaseStudyUniqkey() {
                 rightText="Redesigned the hero around a stronger value proposition with supporting visuals and clear CTAs."
               >
                 <div className="relative aspect-[938/661] w-full overflow-hidden rounded-2xl">
-                  <Image src="/images/uk-hero-image.png" alt="Uniqkey hero redesign" fill className="object-cover" />
+                  <Image src="/images/uk-hero-image.png" alt="Uniqkey hero redesign" fill sizes="(min-width: 1024px) 950px, 100vw" className="object-cover" />
                 </div>
                 <div className="flex flex-col items-start gap-4">
                   <p className="font-body w-full text-2xl font-semibold text-white sm:text-3xl">Why it works</p>
@@ -166,13 +166,13 @@ export default function CaseStudyUniqkey() {
               >
                 <div className="grid w-full grid-cols-1 gap-4 sm:grid-cols-2">
                   <div className="relative aspect-[351/334] w-full overflow-hidden rounded-md">
-                    <Image src="/images/uk-risk-frame2.png" alt="" fill className="object-cover" />
+                    <Image src="/images/uk-risk-frame2.png" alt="" fill sizes="(min-width: 1024px) 950px, 100vw" className="object-cover" />
                   </div>
                   <div className="relative aspect-[466/347] w-full overflow-hidden rounded-md">
-                    <Image src="/images/uk-risk-frame3.png" alt="" fill className="object-cover" />
+                    <Image src="/images/uk-risk-frame3.png" alt="" fill sizes="(min-width: 1024px) 950px, 100vw" className="object-cover" />
                   </div>
                   <div className="relative aspect-[575/237] w-full overflow-hidden rounded-md sm:col-span-2">
-                    <Image src="/images/uk-risk-frame1.png" alt="" fill className="object-cover" />
+                    <Image src="/images/uk-risk-frame1.png" alt="" fill sizes="(min-width: 1024px) 950px, 100vw" className="object-cover" />
                   </div>
                 </div>
                 <div className="flex flex-col items-start gap-4">
@@ -191,16 +191,16 @@ export default function CaseStudyUniqkey() {
               >
                 <div className="grid w-full grid-cols-2 gap-4 sm:grid-cols-4">
                   <div className="relative aspect-[165/374] w-full overflow-hidden rounded-md">
-                    <Image src="/images/uk-feature-frame4.png" alt="" fill className="object-cover" />
+                    <Image src="/images/uk-feature-frame4.png" alt="" fill sizes="(min-width: 1024px) 950px, 100vw" className="object-cover" />
                   </div>
                   <div className="relative col-span-2 aspect-[610/370] w-full overflow-hidden rounded-md sm:col-span-1 sm:aspect-[297/209]">
-                    <Image src="/images/uk-feature-frame2.png" alt="" fill className="object-cover" />
+                    <Image src="/images/uk-feature-frame2.png" alt="" fill sizes="(min-width: 1024px) 950px, 100vw" className="object-cover" />
                   </div>
                   <div className="relative col-span-2 aspect-[610/370] w-full overflow-hidden rounded-md sm:col-span-1 sm:aspect-auto sm:row-span-2 sm:h-full">
-                    <Image src="/images/uk-feature-frame1.png" alt="" fill className="object-cover" />
+                    <Image src="/images/uk-feature-frame1.png" alt="" fill sizes="(min-width: 1024px) 950px, 100vw" className="object-cover" />
                   </div>
                   <div className="relative aspect-[233/483] w-full overflow-hidden rounded-md">
-                    <Image src="/images/uk-feature-frame3.png" alt="" fill className="object-cover" />
+                    <Image src="/images/uk-feature-frame3.png" alt="" fill sizes="(min-width: 1024px) 950px, 100vw" className="object-cover" />
                   </div>
                 </div>
                 <div className="flex flex-col items-start gap-4">
@@ -220,10 +220,10 @@ export default function CaseStudyUniqkey() {
               >
                 <div className="flex flex-col items-center gap-4 sm:flex-row sm:justify-center">
                   <div className="relative aspect-[203/242] w-full max-w-[203px] overflow-hidden rounded-md">
-                    <Image src="/images/uk-trust-image1.png" alt="" fill className="object-cover" />
+                    <Image src="/images/uk-trust-image1.png" alt="" fill sizes="(min-width: 1024px) 950px, 100vw" className="object-cover" />
                   </div>
                   <div className="relative aspect-[234/268] w-full max-w-[234px] -rotate-[8deg] overflow-hidden rounded-md">
-                    <Image src="/images/uk-trust-image2.png" alt="" fill className="object-cover" />
+                    <Image src="/images/uk-trust-image2.png" alt="" fill sizes="(min-width: 1024px) 950px, 100vw" className="object-cover" />
                   </div>
                 </div>
                 <div className="flex flex-col items-start gap-4">

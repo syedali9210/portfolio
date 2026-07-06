@@ -56,7 +56,6 @@ function useBackdropIsLight(getProbeY: () => number) {
   const [light, setLight] = useState(false);
 
   useEffect(() => {
-    let raf = 0;
     const canvas = document.createElement("canvas");
     canvas.width = 8;
     canvas.height = 8;
@@ -102,7 +101,6 @@ function useBackdropIsLight(getProbeY: () => number) {
     };
 
     const probe = () => {
-      raf = 0;
       const x = window.innerWidth / 2;
       const y = getProbeY();
       // elementsFromPoint returns the full paint stack topmost-first, so
@@ -121,8 +119,21 @@ function useBackdropIsLight(getProbeY: () => number) {
       setLight(false);
     };
 
+    // Sampling walks the paint stack and reads image pixels, so it's too
+    // heavy to run every scroll frame. Trailing-edge throttle: at most one
+    // probe per PROBE_INTERVAL, and always one final probe ≤ an interval
+    // after scrolling stops — imperceptible next to the 500ms crossfade.
+    const PROBE_INTERVAL = 120;
+    let lastRun = 0;
+    let timer: ReturnType<typeof setTimeout> | null = null;
     const schedule = () => {
-      if (!raf) raf = requestAnimationFrame(probe);
+      if (timer) return;
+      const wait = Math.max(0, PROBE_INTERVAL - (performance.now() - lastRun));
+      timer = setTimeout(() => {
+        timer = null;
+        lastRun = performance.now();
+        probe();
+      }, wait);
     };
 
     probe();
@@ -131,7 +142,7 @@ function useBackdropIsLight(getProbeY: () => number) {
     return () => {
       window.removeEventListener("scroll", schedule);
       window.removeEventListener("resize", schedule);
-      if (raf) cancelAnimationFrame(raf);
+      if (timer) clearTimeout(timer);
     };
   }, [getProbeY]);
 
