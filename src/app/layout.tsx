@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { pixelLine, pixelSquare, pixelTriangle, sfPro } from "@/fonts";
 import SmoothScroll from "@/components/SmoothScroll";
+import { Analytics } from "@vercel/analytics/next";
 import "./globals.css";
 
 export const metadata: Metadata = {
@@ -22,6 +23,7 @@ export default function RootLayout({
       <body className="min-h-full bg-black font-body text-white">
         <SmoothScroll />
         {children}
+        <Analytics />
       </body>
     </html>
   );
