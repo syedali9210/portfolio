@@ -23,7 +23,7 @@ const LABEL =
 
 export default function Contact() {
   return (
-    <section id="contact" className="relative px-6 py-24 sm:px-10">
+    <section id="contact" className="relative px-6 py-16 sm:px-10 sm:py-24">
       <div className="relative mx-auto flex max-w-[1320px] flex-col overflow-hidden rounded-2xl border-[0.5px] border-white/26 bg-gradient-to-b from-white/10 to-[#999999]/10 px-6 pt-10 shadow-[0px_10px_5px_rgba(0,0,0,0.15)] backdrop-blur-[48px] sm:px-[90px] sm:pt-[46px]">
         {/* top: contact details on the left, a closing note on the right */}
         <div className="flex flex-col gap-10 border-b border-[#5f5f5f] pb-6 md:flex-row md:justify-between md:gap-[116px]">

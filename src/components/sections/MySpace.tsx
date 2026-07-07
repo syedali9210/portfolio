@@ -12,7 +12,7 @@ export default function MySpace() {
   const [tab, setTab] = useState<Tab>("blogs");
 
   return (
-    <section id="my-space" className="relative px-6 py-20 sm:px-10">
+    <section id="my-space" className="relative px-6 py-12 sm:px-10 sm:py-20">
       <h2 className="mb-10 text-center font-pixel text-6xl text-muted-500 sm:text-8xl">
         My Space
       </h2>
