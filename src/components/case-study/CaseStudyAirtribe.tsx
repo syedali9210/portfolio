@@ -7,6 +7,7 @@ import StickyNote from "./StickyNote";
 import SpeechBubble from "./SpeechBubble";
 import SolutionBlock from "./SolutionBlock";
 import OutcomeBadge from "./OutcomeBadge";
+import InsightAccordion from "./InsightAccordion";
 
 const project = PROJECTS.find((p) => p.id === "airtribe")!;
 
@@ -85,10 +86,26 @@ const SPEECH_BUBBLES = [
 ];
 
 const INSIGHTS = [
-  "Reduce cognitive load",
-  "Guide, don't overwhelm",
-  "Context beats search",
-  "AI should augment, not replace",
+  {
+    title: "Reduce cognitive load",
+    description:
+      "Learning should feel effortless. Surface only what's relevant instead of making learners process everything at once.",
+  },
+  {
+    title: "Guide, don't overwhelm",
+    description:
+      "Instead of presenting every resource upfront, provide contextual guidance and clear next steps based on where the learner is in their journey.",
+  },
+  {
+    title: "Context beats search",
+    description:
+      "Learners shouldn't have to remember where information lives. Answers should appear within the context of the task they're already doing.",
+  },
+  {
+    title: "AI should augment, not replace",
+    description:
+      "AI is most valuable when it supports mentors and learners with summaries, recommendations, and guidance—not when it attempts to replace human teaching.",
+  },
 ];
 
 const OUTCOMES = [
@@ -126,7 +143,7 @@ export default function CaseStudyAirtribe() {
   return (
     <main className="relative px-6 py-32 sm:px-10">
       <div className="mx-auto flex max-w-5xl flex-col gap-6">
-        <ProjectCard project={project} />
+        <ProjectCard project={project} linkable={false} />
 
         <div className="flex flex-col gap-8">
           <CaseStudySection className="flex flex-col items-start gap-4">
@@ -163,13 +180,13 @@ export default function CaseStudyAirtribe() {
               </p>
               <div className="font-pixel-square w-full text-base leading-relaxed text-[#999] sm:text-xl">
                 <p className="mb-4">
-                  Although Airtribe offered quality learning content, the overall experience made it
-                  difficult for learners to understand where they were, what to do next, and how to make
-                  the most of the platform.
+                  To dig deeper, I broke the problem down into four areas: how learners moved through
+                  their course journey, how they navigated the platform, how information was
+                  prioritized, and how engaged they felt along the way.
                 </p>
                 <p>
-                  My goal was to redesign the learning experience while exploring how AI could provide
-                  contextual assistance without overwhelming users.
+                  Each area became its own lens for uncovering exactly where the friction was coming
+                  from.
                 </p>
               </div>
             </div>
@@ -214,17 +231,7 @@ export default function CaseStudyAirtribe() {
                 feature that followed.
               </p>
             </div>
-            <div className="flex w-full flex-col gap-4">
-              {INSIGHTS.map((insight) => (
-                <div
-                  key={insight}
-                  className="flex items-center justify-between rounded-2xl bg-[#2e2e2e] px-5 py-4"
-                >
-                  <p className="font-pixel-square text-lg text-white sm:text-2xl">{insight}</p>
-                  <p className="font-pixel-square text-lg text-white sm:text-2xl">+</p>
-                </div>
-              ))}
-            </div>
+            <InsightAccordion items={INSIGHTS} />
           </CaseStudySection>
 
           <CaseStudySection className="flex flex-col items-start gap-8">
@@ -277,7 +284,8 @@ export default function CaseStudyAirtribe() {
                 <div className="flex flex-col items-start gap-4">
                   <p className="font-body w-full text-2xl font-semibold text-white sm:text-3xl">Why it works</p>
                   <p className="font-pixel-square w-full text-base leading-relaxed text-muted-600 sm:text-xl">
-                    Creates urgency without overwhelming users.
+                    Learners can see exactly what needs attention at a glance, without digging through
+                    multiple screens.
                   </p>
                 </div>
               </SolutionBlock>

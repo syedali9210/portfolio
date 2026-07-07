@@ -38,11 +38,20 @@ function CardBody({ project }: { project: Project }) {
   );
 }
 
-export default function ProjectCard({ project }: { project: Project }) {
+export default function ProjectCard({
+  project,
+  linkable = true,
+}: {
+  project: Project;
+  // Case-study pages reuse this card as their own hero image, so linking
+  // it to `/projects/${project.id}` would point the card at the page
+  // it's already on — a dead click styled like a live one.
+  linkable?: boolean;
+}) {
   const className =
     "flex flex-col gap-2.5 rounded-2xl border-[0.5px] border-white/26 bg-gradient-to-b from-white/10 to-[#999999]/10 p-4 shadow-[0px_10px_5px_rgba(0,0,0,0.15)] backdrop-blur-[48px] sm:px-[18px] sm:py-[19px]";
 
-  if (project.hasCaseStudy) {
+  if (project.hasCaseStudy && linkable) {
     return (
       <Link
         href={`/projects/${project.id}`}

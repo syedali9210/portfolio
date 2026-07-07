@@ -76,7 +76,7 @@ export default function CaseStudyUniqkey() {
   return (
     <main className="relative px-6 py-32 sm:px-10">
       <div className="mx-auto flex max-w-5xl flex-col gap-6">
-        <ProjectCard project={project} />
+        <ProjectCard project={project} linkable={false} />
 
         <div className="flex flex-col gap-8">
           <CaseStudySection className="flex flex-col items-start gap-4">
@@ -247,9 +247,9 @@ export default function CaseStudyUniqkey() {
             </div>
 
             <p className="font-pixel-triangle max-w-md text-lg text-[#999] sm:text-xl">
-              Phew... that was a lot of compliance.
+              Phew... that was a lot of breach talk.
               <br />
-              Thanks for sticking around. Let&rsquo;s move on to something a little less regulated.
+              Thanks for sticking around. Let&rsquo;s move on to something a little less alarming.
             </p>
 
             <div className="grid w-full grid-cols-1 place-items-start gap-8 sm:grid-cols-2">

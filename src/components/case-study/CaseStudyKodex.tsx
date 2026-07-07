@@ -77,7 +77,7 @@ export default function CaseStudyKodex() {
   return (
     <main className="relative px-6 py-32 sm:px-10">
       <div className="mx-auto flex max-w-5xl flex-col gap-6">
-        <ProjectCard project={project} />
+        <ProjectCard project={project} linkable={false} />
 
         <div className="flex flex-col gap-8">
           <CaseStudySection className="flex flex-col items-start gap-4">
