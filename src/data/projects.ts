@@ -15,21 +15,6 @@ export type Project = {
 
 export const PROJECTS: Project[] = [
   {
-    id: "airtribe",
-    navLabel: "Airtribe",
-    titleBg: "bg-[#dff3dc]",
-    title: "Airtribe - AI Learning Experience",
-    meta: "EduTech, 2025",
-    gradient: "from-[#123600] to-[#005266]",
-    image: "/images/frame-7.png",
-    borderColor: "border-[#f3f3f3]",
-    categoryPill: "/images/subtract-airtribe-tag.svg",
-    categoryLabel: "Product Design",
-    description:
-      "Designed an AI experience for the users to ease their learning experience through out the site.",
-    hasCaseStudy: true,
-  },
-  {
     id: "kodex",
     navLabel: "Kodex",
     titleBg: "bg-[#e9d5aa]",
@@ -55,6 +40,21 @@ export const PROJECTS: Project[] = [
     categoryPill: "/images/subtract-uniqkey-tag.svg",
     categoryLabel: "Website design",
     description: "Designing a landing page that turns security awareness into action.",
+    hasCaseStudy: true,
+  },
+  {
+    id: "airtribe",
+    navLabel: "Airtribe",
+    titleBg: "bg-[#dff3dc]",
+    title: "Airtribe - AI Learning Experience",
+    meta: "EduTech, 2025",
+    gradient: "from-[#123600] to-[#005266]",
+    image: "/images/frame-7.png",
+    borderColor: "border-[#f3f3f3]",
+    categoryPill: "/images/subtract-airtribe-tag.svg",
+    categoryLabel: "Product Design",
+    description:
+      "Designed an AI experience for the users to ease their learning experience through out the site.",
     hasCaseStudy: true,
   },
 ];

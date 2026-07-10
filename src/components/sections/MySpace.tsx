@@ -4,7 +4,9 @@ import { useState } from "react";
 import GlassPanel from "@/components/GlassPanel";
 import GlassTile from "@/components/GlassTile";
 import PetBuddy from "@/components/PetBuddy";
+import ScratchCard from "@/components/ScratchCard";
 import SupermoveCard from "@/components/SupermoveCard";
+import SwipeableCards from "@/components/SwipeableCards";
 
 type Tab = "blogs" | "archive";
 
@@ -55,10 +57,16 @@ export default function MySpace() {
             Welcome to the space where i keep on experimenting with things,
             anything and everything will be put up in this area, :)
           </p>
-          <div className="flex w-full flex-col items-center gap-8 sm:flex-row sm:justify-center sm:gap-10">
-            <SupermoveCard />
-            <SupermoveCard />
-          </div>
+          <SwipeableCards
+            cards={[
+              <ScratchCard key="supermove-1" className="h-full w-full rounded-2xl">
+                <SupermoveCard />
+              </ScratchCard>,
+              <ScratchCard key="supermove-2" className="h-full w-full rounded-2xl">
+                <SupermoveCard />
+              </ScratchCard>,
+            ]}
+          />
         </div>
       )}
 

@@ -2,8 +2,11 @@
 
 import { useEffect, useState, type MouseEvent } from "react";
 import { motion } from "motion/react";
+import { usePathname, useRouter } from "next/navigation";
 import { lenisRef } from "@/components/SmoothScroll";
 import { PROJECTS } from "@/data/projects";
+import DynamicInfoCard from "@/components/DynamicInfoCard";
+import ProgressiveBlur from "@/components/ProgressiveBlur";
 
 // Root-relative hashes so the links work from any page (case studies
 // included), not just the home page. "Projects" points straight at the
@@ -20,7 +23,7 @@ const NAV_ITEMS = [
 // mobile frame): "Projects" alone, then the remaining links grouped.
 const MOBILE_PILL_GROUPS = [[NAV_ITEMS[0]], NAV_ITEMS.slice(1)];
 
-const NAV_SPRING = { type: "spring" as const, stiffness: 180, damping: 22 };
+const NAV_SPRING = { type: "spring" as const, stiffness: 140, damping: 26 };
 
 // Adaptive (Apple-style) tinting: glass pill + text colors for each mode,
 // crossfaded via transition-colors as the page scrolls underneath.
@@ -30,25 +33,6 @@ const PILL_LIGHT_BG =
   "border-black/15 from-black/5 to-black/10 shadow-[0px_10px_15px_rgba(0,0,0,0.08)]";
 const TEXT_DARK_BG = "text-muted-300 hover:text-white";
 const TEXT_LIGHT_BG = "text-[#4a4a4a] hover:text-black";
-
-function useClock() {
-  const [time, setTime] = useState<string | null>(null);
-
-  useEffect(() => {
-    const update = () =>
-      setTime(
-        new Date().toLocaleTimeString("en-US", {
-          hour: "numeric",
-          minute: "2-digit",
-        })
-      );
-    update();
-    const id = setInterval(update, 30_000);
-    return () => clearInterval(id);
-  }, []);
-
-  return time;
-}
 
 // Samples the page behind a probe point (skipping the nav itself) and
 // reports whether the effective background there is light, so the nav can
@@ -192,13 +176,31 @@ function useActiveSection() {
 }
 
 export default function Nav() {
-  const time = useClock();
   const topLight = useBackdropIsLight(probeTop);
   const bottomLight = useBackdropIsLight(probeBottom);
   const [active, setActive] = useActiveSection();
+  // Tracks the notch's live rendered height so the link pill below it can
+  // follow the expand/collapse animation instead of assuming a fixed gap.
+  // Seeded with the notch's collapsed height so there's no jump on mount.
+  const [notchHeight, setNotchHeight] = useState(58);
+  const NOTCH_GAP = 20;
 
-  const topText = topLight ? TEXT_LIGHT_BG : TEXT_DARK_BG;
+  const pathname = usePathname();
+  const router = useRouter();
+  const isProjectPage = pathname?.startsWith("/projects/") ?? false;
+
   const bottomText = bottomLight ? TEXT_LIGHT_BG : TEXT_DARK_BG;
+
+  // Case-study pages are always reached by clicking into them from the
+  // homepage, so there's real history to pop; direct links (new tab, no
+  // referrer) fall back to home instead of leaving the visitor stuck.
+  const handleBack = () => {
+    if (window.history.length > 1) {
+      router.back();
+    } else {
+      router.push("/");
+    }
+  };
 
   // When already on the home page, glide to the section (or, for "/",
   // back to the very top) through Lenis instead of letting the browser
@@ -222,62 +224,49 @@ export default function Nav() {
 
   return (
     <>
-      {/* Top bar: name + time on mobile; the link pill only joins on md+.
-          The whole bar drops in from above, then the links cascade in. */}
+      {/* Fades page content into a blur as it scrolls toward the very top
+          or (on mobile) bottom edge, so it stays legible under the notch,
+          back button, and docked nav without a hard glass panel. */}
+      <ProgressiveBlur side="top" className="z-40" />
+      <ProgressiveBlur side="bottom" height={110} className="z-40 md:hidden" />
+
+      {/* Back button only; the desktop link pill is gone — its links now
+          live inside the notch's expanded (hover) state instead. */}
       <motion.header
         data-adaptive-nav
-        initial={{ y: -48, opacity: 0 }}
-        animate={{ y: 0, opacity: 1 }}
-        transition={{ ...NAV_SPRING, delay: 0.15 }}
-        className="fixed top-0 left-0 z-50 flex w-full items-center justify-between gap-4 px-5 py-5 sm:px-10 sm:py-6"
+        initial={{ y: -48, opacity: 0, top: notchHeight + NOTCH_GAP }}
+        animate={{ y: 0, opacity: 1, top: notchHeight + NOTCH_GAP }}
+        transition={{
+          default: { ...NAV_SPRING, delay: 0.15 },
+          top: { type: "spring", stiffness: 170, damping: 32 },
+        }}
+        className="fixed left-0 z-50 w-full px-5 sm:px-10"
       >
-        <motion.a
-          href="/"
-          onClick={(e) => handleNavClick(e, "/")}
-          whileHover={{ scale: 1.05 }}
-          whileTap={{ scale: 0.95 }}
-          className={`shrink-0 text-base transition-colors duration-500 ${topText}`}
-        >
-          Syed.Ali
-        </motion.a>
-
-        <nav
-          className={`hidden max-w-full items-center gap-10 rounded-2xl border-[0.5px] bg-gradient-to-b px-4 py-1.5 backdrop-blur-[48px] transition-all duration-500 md:flex lg:gap-24 ${
-            topLight ? PILL_LIGHT_BG : PILL_DARK_BG
-          }`}
-        >
-          {NAV_ITEMS.map((item, i) => {
-            const isActive = item.href.endsWith(`#${active}`);
-            return (
-              <motion.a
-                key={item.label}
-                href={item.href}
-                onClick={(e) => handleNavClick(e, item.href)}
-                initial={{ y: -12, opacity: 0 }}
-                animate={{ y: 0, opacity: 1 }}
-                transition={{ ...NAV_SPRING, delay: 0.35 + i * 0.08 }}
-                whileHover={{ scale: 1.08 }}
-                whileTap={{ scale: 0.95 }}
-                className={`relative shrink-0 px-3 py-1.5 text-sm leading-4 font-medium tracking-[-0.08px] transition-colors duration-500 ${
-                  isActive ? (topLight ? "text-black" : "text-white") : topText
-                }`}
-              >
-                {isActive && (
-                  <motion.span
-                    layoutId="nav-active-desktop"
-                    transition={NAV_SPRING}
-                    className={`absolute inset-0 rounded-[10px] ${topLight ? "bg-black/10" : "bg-white/15"}`}
-                  />
-                )}
-                <span className="relative">{item.label}</span>
-              </motion.a>
-            );
-          })}
-        </nav>
-
-        <p className={`shrink-0 text-base transition-colors duration-500 ${topLight ? "text-[#4a4a4a]" : "text-muted-300"}`}>
-          {time ?? " "}
-        </p>
+        {isProjectPage && (
+          <motion.button
+            type="button"
+            onClick={handleBack}
+            initial={{ y: -12, opacity: 0 }}
+            animate={{ y: 0, opacity: 1 }}
+            transition={{ ...NAV_SPRING, delay: 0.35 }}
+            whileHover={{ scale: 1.05 }}
+            whileTap={{ scale: 0.95 }}
+            className={`absolute top-1/2 left-5 flex -translate-y-1/2 shrink-0 items-center gap-1.5 rounded-2xl border-[0.5px] bg-gradient-to-b px-3 py-1.5 text-sm font-medium tracking-[-0.08px] backdrop-blur-[48px] transition-all duration-500 sm:left-10 ${
+              topLight ? `${PILL_LIGHT_BG} text-[#4a4a4a] hover:text-black` : `${PILL_DARK_BG} text-muted-300 hover:text-white`
+            }`}
+          >
+            <svg width="14" height="14" viewBox="0 0 14 14" fill="none" className="shrink-0">
+              <path
+                d="M8.5 3L4.5 7L8.5 11"
+                stroke="currentColor"
+                strokeWidth="1.5"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+              />
+            </svg>
+            Back
+          </motion.button>
+        )}
       </motion.header>
 
       {/* Mobile: bottom-docked nav pills, rising up from below the fold
@@ -322,6 +311,13 @@ export default function Nav() {
           </motion.div>
         ))}
       </nav>
+
+      <DynamicInfoCard
+        onHeightChange={setNotchHeight}
+        navItems={NAV_ITEMS}
+        activeSection={active}
+        onNavClick={handleNavClick}
+      />
     </>
   );
 }
