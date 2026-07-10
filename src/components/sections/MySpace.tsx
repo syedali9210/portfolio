@@ -1,11 +1,13 @@
 "use client";
 
 import { useState } from "react";
+import CubeReveal from "@/components/CubeReveal";
 import GlassPanel from "@/components/GlassPanel";
 import GlassTile from "@/components/GlassTile";
 import PetBuddy from "@/components/PetBuddy";
 import ScratchCard from "@/components/ScratchCard";
 import SwipeableCards from "@/components/SwipeableCards";
+import VideoReveal from "@/components/VideoReveal";
 
 type Tab = "blogs" | "archive";
 
@@ -58,13 +60,19 @@ export default function MySpace() {
           </p>
           <SwipeableCards
             cards={[
-              <ScratchCard key="price" forLabel="For You" />,
               <ScratchCard
-                key="archive-soon"
+                key="cube"
                 forLabel="For You"
-                revealText="SOON"
-                plan="ARCHIVE"
-                period="TBD"
+                plan="PROTOTYPE"
+                period="LIVE"
+                reveal={<CubeReveal />}
+              />,
+              <ScratchCard
+                key="demo"
+                forLabel="For You"
+                plan="DEMO"
+                period="REC"
+                reveal={<VideoReveal src="/videos/archive-demo.mp4" />}
               />,
             ]}
           />

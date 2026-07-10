@@ -1,17 +1,34 @@
 "use client";
 
-import { useCallback, useEffect, useLayoutEffect, useRef, useState, type PointerEvent } from "react";
+import {
+  useCallback,
+  useEffect,
+  useLayoutEffect,
+  useRef,
+  useState,
+  type PointerEvent,
+  type ReactNode,
+} from "react";
 
 // A pixel-exact replica of the Framer University "Image Scratch" card
 // (https://scratcher.learnframer.site/): a 480x300 black credit-card with a
 // dotted foil surface that scratches off under a grungy 70px brush to reveal
-// the text hiding underneath. The foil is the actual production technique
+// whatever's hiding underneath. The foil is the actual production technique
 // from Framer's ImageScratch module — an overlay image painted onto a
 // canvas, erased along the pointer path with `destination-out` stamps of a
 // custom brush image.
 const CARD_W = 480;
 const CARD_H = 300;
 const BRUSH_SIZE = 70;
+
+// Coverage is tracked on a coarse grid rather than by reading canvas pixels
+// every frame — cheap to update, plenty accurate for "have they scratched
+// most of it off yet." Once past the threshold the foil fades the rest of
+// the way out and the surface stops listening for more scratches, handing
+// pointer control to whatever `reveal` content sits underneath (e.g. a
+// draggable model).
+const GRID = 16;
+const REVEAL_THRESHOLD = 0.55;
 
 const FOIL_SRC = "/images/scratch/foil-dots.png";
 const BRUSH_SRC = "/images/scratch/brush-grunge.png";
@@ -47,16 +64,19 @@ function useGeneratedNow() {
 
 interface ScratchCardProps {
   forLabel?: string;
-  revealText?: string;
   plan?: string;
   period?: string;
+  // What's hiding under the foil — mounted only once the card is mostly
+  // scratched off, so an entrance animation (or a video's first frame)
+  // plays right as it's revealed instead of running hidden underneath.
+  reveal: ReactNode;
 }
 
 export default function ScratchCard({
   forLabel = "For You",
-  revealText = "$299",
   plan = "PRO",
   period = "8760H",
+  reveal,
 }: ScratchCardProps) {
   const frameRef = useRef<HTMLDivElement>(null);
   const surfaceRef = useRef<HTMLDivElement>(null);
@@ -65,10 +85,12 @@ export default function ScratchCard({
   const brushRef = useRef<HTMLImageElement | null>(null);
   const drawingRef = useRef(false);
   const lastRef = useRef<{ x: number; y: number } | null>(null);
+  const clearedRef = useRef<boolean[]>(new Array(GRID * GRID).fill(false));
   // The card is a fixed 480x300 design (like the Framer original) scaled
   // uniformly to whatever width it's given, so every proportion survives on
   // small screens instead of reflowing.
   const [scale, setScale] = useState(1);
+  const [revealed, setRevealed] = useState(false);
   const now = useGeneratedNow();
 
   // Layout effect so the very first paint is already scaled — otherwise a
@@ -104,6 +126,8 @@ export default function ScratchCard({
     const sw = img.naturalWidth * cover;
     const sh = img.naturalHeight * cover;
     ctx.drawImage(img, (w - sw) / 2, (h - sh) / 2, sw, sh);
+    clearedRef.current = new Array(GRID * GRID).fill(false);
+    setRevealed(false);
   }, []);
 
   useEffect(() => {
@@ -149,7 +173,26 @@ export default function ScratchCard({
     };
   };
 
-  const stamp = (ctx: CanvasRenderingContext2D, x: number, y: number) => {
+  // Marks the coarse grid cells under a stamp as cleared and flips
+  // `revealed` once enough of the surface has been scratched off.
+  const markCleared = (x: number, y: number, w: number, h: number) => {
+    if (w <= 0 || h <= 0) return;
+    const gx = Math.floor((x / w) * GRID);
+    const gy = Math.floor((y / h) * GRID);
+    const reach = Math.max(1, Math.ceil((BRUSH_SIZE / Math.min(w, h)) * GRID));
+    for (let dx = -reach; dx <= reach; dx++) {
+      for (let dy = -reach; dy <= reach; dy++) {
+        const cx = gx + dx;
+        const cy = gy + dy;
+        if (cx < 0 || cy < 0 || cx >= GRID || cy >= GRID) continue;
+        clearedRef.current[cy * GRID + cx] = true;
+      }
+    }
+    const count = clearedRef.current.reduce((n, c) => n + (c ? 1 : 0), 0);
+    if (count / (GRID * GRID) >= REVEAL_THRESHOLD) setRevealed(true);
+  };
+
+  const stamp = (ctx: CanvasRenderingContext2D, x: number, y: number, w: number, h: number) => {
     const half = BRUSH_SIZE / 2;
     ctx.globalCompositeOperation = "destination-out";
     const brush = brushRef.current;
@@ -160,15 +203,20 @@ export default function ScratchCard({
       ctx.arc(x, y, half, 0, Math.PI * 2);
       ctx.fill();
     }
+    markCleared(x, y, w, h);
   };
 
   // stopPropagation keeps the surrounding swipe deck from reading a scratch
-  // as a swipe-to-next-card drag.
+  // as a swipe-to-next-card drag. Once revealed, the surface stops handling
+  // pointers at all so a draggable reveal (e.g. a 3D model) underneath gets
+  // uncontested events.
   const onPointerDown = (e: PointerEvent<HTMLDivElement>) => {
+    if (revealed) return;
     e.stopPropagation();
+    const surface = surfaceRef.current;
     const ctx = canvasRef.current?.getContext("2d");
     const pt = getPoint(e);
-    if (!ctx || !pt) return;
+    if (!ctx || !pt || !surface) return;
     try {
       e.currentTarget.setPointerCapture(e.pointerId);
     } catch {
@@ -177,15 +225,16 @@ export default function ScratchCard({
     }
     drawingRef.current = true;
     lastRef.current = pt;
-    stamp(ctx, pt.x, pt.y);
+    stamp(ctx, pt.x, pt.y, surface.clientWidth, surface.clientHeight);
   };
 
   const onPointerMove = (e: PointerEvent<HTMLDivElement>) => {
-    if (!drawingRef.current) return;
+    if (revealed || !drawingRef.current) return;
     e.stopPropagation();
+    const surface = surfaceRef.current;
     const ctx = canvasRef.current?.getContext("2d");
     const pt = getPoint(e);
-    if (!ctx || !pt) return;
+    if (!ctx || !pt || !surface) return;
     // Interpolate stamps between events so fast swipes leave a continuous
     // scratch instead of a dotted line (same 0.4-radius step as the original).
     const last = lastRef.current;
@@ -194,10 +243,16 @@ export default function ScratchCard({
       const steps = Math.max(1, Math.ceil(dist / (BRUSH_SIZE * 0.2)));
       for (let i = 1; i <= steps; i++) {
         const t = i / steps;
-        stamp(ctx, last.x + (pt.x - last.x) * t, last.y + (pt.y - last.y) * t);
+        stamp(
+          ctx,
+          last.x + (pt.x - last.x) * t,
+          last.y + (pt.y - last.y) * t,
+          surface.clientWidth,
+          surface.clientHeight
+        );
       }
     } else {
-      stamp(ctx, pt.x, pt.y);
+      stamp(ctx, pt.x, pt.y, surface.clientWidth, surface.clientHeight);
     }
     lastRef.current = pt;
   };
@@ -209,9 +264,6 @@ export default function ScratchCard({
     drawingRef.current = false;
     lastRef.current = null;
   };
-
-  const bigText =
-    "font-open-runde whitespace-nowrap text-[86px] font-semibold leading-[1.2] tracking-[-0.01em]";
 
   return (
     <div ref={frameRef} className="relative w-full" style={{ aspectRatio: `${CARD_W} / ${CARD_H}` }}>
@@ -232,15 +284,6 @@ export default function ScratchCard({
           </p>
         </div>
 
-        {/* The prize under the foil: a dark embossed copy with a 66% light
-            copy stacked on it, both centered on the card (not the foil). */}
-        <div className="absolute top-1/2 left-1/2 z-[1] -translate-x-1/2 -translate-y-1/2">
-          <p className={`${bigText} text-[#212121]`}>{revealText}</p>
-        </div>
-        <div className="absolute top-1/2 left-1/2 z-[1] -translate-x-1/2 -translate-y-1/2 opacity-[0.66]">
-          <p className={`${bigText} text-[#e8e8e8]`}>{revealText}</p>
-        </div>
-
         <div className="relative z-[2] min-h-0 w-full flex-1 px-5">
           <div
             ref={surfaceRef}
@@ -249,10 +292,16 @@ export default function ScratchCard({
             onPointerUp={endStroke}
             onPointerCancel={endStroke}
             onPointerLeave={endStroke}
-            className="relative h-full w-full overflow-hidden rounded-[10px]"
+            className="relative h-full w-full overflow-hidden rounded-[10px] bg-black"
             style={{ touchAction: "none" }}
           >
-            <canvas ref={canvasRef} className="pointer-events-none absolute inset-0 block h-full w-full" />
+            {revealed && <div className="absolute inset-0">{reveal}</div>}
+            <canvas
+              ref={canvasRef}
+              className={`pointer-events-none absolute inset-0 block h-full w-full transition-opacity duration-700 ${
+                revealed ? "opacity-0" : "opacity-100"
+              }`}
+            />
           </div>
 
           {/* Data labels ride above the foil — they never scratch off. */}
