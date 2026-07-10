@@ -30,6 +30,15 @@ body {
   font-family: var(--font-pixel-triangle), sans-serif;
 }
 
+/* The scratcher card's typefaces (Framer University Image Scratch replica) */
+.font-open-runde {
+  font-family: var(--font-open-runde), sans-serif;
+}
+
+.font-geist-mono {
+  font-family: var(--font-geist-mono), monospace;
+}
+
 /* Native CSS smooth scrolling must stay off — Lenis drives all scrolling
    (wheel and programmatic) and the two smoothing systems fight otherwise. */
 

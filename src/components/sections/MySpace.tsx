@@ -5,7 +5,6 @@ import GlassPanel from "@/components/GlassPanel";
 import GlassTile from "@/components/GlassTile";
 import PetBuddy from "@/components/PetBuddy";
 import ScratchCard from "@/components/ScratchCard";
-import SupermoveCard from "@/components/SupermoveCard";
 import SwipeableCards from "@/components/SwipeableCards";
 
 type Tab = "blogs" | "archive";
@@ -59,12 +58,14 @@ export default function MySpace() {
           </p>
           <SwipeableCards
             cards={[
-              <ScratchCard key="supermove-1" className="h-full w-full rounded-2xl">
-                <SupermoveCard />
-              </ScratchCard>,
-              <ScratchCard key="supermove-2" className="h-full w-full rounded-2xl">
-                <SupermoveCard />
-              </ScratchCard>,
+              <ScratchCard key="price" forLabel="For You" />,
+              <ScratchCard
+                key="archive-soon"
+                forLabel="For You"
+                revealText="SOON"
+                plan="ARCHIVE"
+                period="TBD"
+              />,
             ]}
           />
         </div>
