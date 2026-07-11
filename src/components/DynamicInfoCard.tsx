@@ -92,6 +92,11 @@ interface DynamicInfoCardProps {
   navItems: { label: string; href: string }[];
   activeSection: string | null;
   onNavClick: (e: MouseEvent<HTMLAnchorElement>, href: string) => void;
+  // "fixed" (default) pins the notch to the actual viewport, as the site
+  // header. "embedded" positions it relative to a `relative`-positioned
+  // ancestor instead, for reusing the exact same component as a contained
+  // showcase (e.g. inside a card) rather than the page chrome.
+  variant?: "fixed" | "embedded";
 }
 
 // A persistent, always-on-top profile widget styled after a MacBook notch:
@@ -104,6 +109,7 @@ export default function DynamicInfoCard({
   navItems,
   activeSection,
   onNavClick,
+  variant = "fixed",
 }: DynamicInfoCardProps) {
   const [open, setOpen] = useState(false);
   const ref = useRef<HTMLDivElement>(null);
@@ -131,7 +137,11 @@ export default function DynamicInfoCard({
   }, [isMobile, open]);
 
   return (
-    <div className="fixed top-0 left-1/2 z-50 -translate-x-1/2">
+    <div
+      className={`left-1/2 z-50 -translate-x-1/2 ${
+        variant === "embedded" ? "absolute top-0" : "fixed top-0"
+      }`}
+    >
       <div
         ref={ref}
         className="relative"

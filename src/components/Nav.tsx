@@ -12,7 +12,7 @@ import ProgressiveBlur from "@/components/ProgressiveBlur";
 // included), not just the home page. "Projects" points straight at the
 // first project card rather than the section top, so it drops the
 // visitor right into the list instead of the pinned title scrub.
-const NAV_ITEMS = [
+export const NAV_ITEMS = [
   { label: "Projects", href: `/#${PROJECTS[0].id}` },
   { label: "About me", href: "/#about" },
   { label: "My Space", href: "/#my-space" },

@@ -48,24 +48,9 @@ function CardMark() {
   );
 }
 
-// "GENERATED" stamps the moment the card was rendered (client-side only, so
-// the server markup never disagrees with the visitor's clock/locale).
-function useGeneratedNow() {
-  const [now, setNow] = useState<{ date: string; time: string } | null>(null);
-  useEffect(() => {
-    const d = new Date();
-    setNow({
-      date: d.toLocaleDateString("en-US"),
-      time: d.toLocaleTimeString("en-US", { hour: "numeric", hour12: true }),
-    });
-  }, []);
-  return now;
-}
-
 interface ScratchCardProps {
   forLabel?: string;
-  plan?: string;
-  period?: string;
+  caption?: string;
   // What's hiding under the foil — mounted only once the card is mostly
   // scratched off, so an entrance animation (or a video's first frame)
   // plays right as it's revealed instead of running hidden underneath.
@@ -74,8 +59,7 @@ interface ScratchCardProps {
 
 export default function ScratchCard({
   forLabel = "For You",
-  plan = "PRO",
-  period = "8760H",
+  caption = "Experiment and prototype",
   reveal,
 }: ScratchCardProps) {
   const frameRef = useRef<HTMLDivElement>(null);
@@ -91,7 +75,6 @@ export default function ScratchCard({
   // small screens instead of reflowing.
   const [scale, setScale] = useState(1);
   const [revealed, setRevealed] = useState(false);
-  const now = useGeneratedNow();
 
   // Layout effect so the very first paint is already scaled — otherwise a
   // phone flashes the full 480px card for a frame before shrinking.
@@ -304,19 +287,9 @@ export default function ScratchCard({
             />
           </div>
 
-          {/* Data labels ride above the foil — they never scratch off. */}
-          <div className="pointer-events-none absolute inset-y-0 right-5 left-5 z-[2] flex items-end gap-2.5 p-2 font-geist-mono text-xs font-medium leading-[1.3] tracking-[0.03em] text-[#e8e8e8] tabular-nums">
-            <div className="flex-1">
-              <p>PLAN / {plan}</p>
-              <p>PERIOD / {period}</p>
-            </div>
-            <div className="flex-1 text-right">
-              <p>GENERATED</p>
-              <div className="flex items-center justify-end gap-2.5">
-                <p>{now?.date ?? ""}</p>
-                <p>{now?.time ?? ""}</p>
-              </div>
-            </div>
+          {/* Caption rides above the foil — it never scratches off. */}
+          <div className="pointer-events-none absolute inset-x-5 bottom-0 z-[2] p-2 font-geist-mono text-xs font-medium tracking-[0.03em] text-[#e8e8e8]">
+            <p>{caption}</p>
           </div>
         </div>
 
