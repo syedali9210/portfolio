@@ -33,3 +33,23 @@ export const sfPro = localFont({
   variable: "--font-body",
   display: "swap",
 });
+
+// The scratcher card (My Space → Archive) is a pixel-exact replica of the
+// Framer University "Image Scratch" card, which sets its numerals in Open
+// Runde and its data labels in Geist Mono — loaded only at the weights the
+// card actually uses.
+export const openRunde = localFont({
+  src: [
+    { path: "./open-runde/OpenRunde-Medium.woff2", weight: "500", style: "normal" },
+    { path: "./open-runde/OpenRunde-Semibold.woff2", weight: "600", style: "normal" },
+  ],
+  variable: "--font-open-runde",
+  display: "swap",
+});
+
+export const geistMono = localFont({
+  src: "./geist-mono/GeistMono-Medium.woff2",
+  weight: "500",
+  variable: "--font-geist-mono",
+  display: "swap",
+});

@@ -50,7 +50,7 @@ export default function TiltCard({
   };
 
   return (
-    <div ref={wrapRef} className={`t-tilt relative ${className}`} onPointerMove={onMove} onPointerLeave={onLeave}>
+    <div ref={wrapRef} className={`t-tilt relative cursor-pointer ${className}`} onPointerMove={onMove} onPointerLeave={onLeave}>
       {showPeekingBuddy && <PeekingBuddy corner={peekCorner} active={isHovering} />}
       <div ref={cardRef} className="t-tilt-card">
         {children}

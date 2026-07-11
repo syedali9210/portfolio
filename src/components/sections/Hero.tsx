@@ -6,6 +6,7 @@ import HeroGlow from "@/components/HeroGlow";
 import HeroMobileStack from "@/components/HeroMobileStack";
 import MusicDock from "@/components/MusicDock";
 import PetBuddy from "@/components/PetBuddy";
+import ProgressiveBlur from "@/components/ProgressiveBlur";
 import TiltCard from "@/components/TiltCard";
 import DeskBuddyCard from "@/components/DeskBuddyCard";
 
@@ -31,7 +32,11 @@ export default function Hero() {
       id="home"
       className="relative flex min-h-screen flex-col items-center justify-start overflow-hidden px-6 pt-32 pb-24 md:justify-center"
     >
-      {/* ambient glow: stays subtle behind headline/dock, warms up near the bottom */}
+      {/* ambient glow: stays subtle behind headline/dock, warms up near the
+          bottom. The progressive blur rides on top of it, strongest right
+          at the glow's own edge, so the boundary between the glow and the
+          plain background underneath softens into a haze instead of
+          showing as a hard line. */}
       <HeroGlow>
         <div
           className="pointer-events-none absolute inset-x-0 bottom-0 h-[40%]"
@@ -39,6 +44,13 @@ export default function Hero() {
             background:
               "radial-gradient(ellipse at bottom, rgba(140,50,0,0.4) 0%, rgba(60,20,0,0.18) 45%, transparent 75%)",
           }}
+        />
+        <ProgressiveBlur
+          side="bottom"
+          position="absolute"
+          height="45%"
+          maxBlur={22}
+          layers={6}
         />
       </HeroGlow>
 
@@ -63,13 +75,14 @@ export default function Hero() {
                   {LEFT_ROW_ICONS.map((icon) => (
                     <GlassTile key={icon.src} src={icon.src} alt="" className="h-13 w-13" imgClassName={icon.imgClassName} />
                   ))}
+                  <GlassTile src="/images/syed-photo.jpg" alt="" className="h-13 w-13" imgClassName="object-cover object-top" />
                 </GlassPanel>
               </TiltCard>
             </FadeInUp>
             <FadeInUp delay={0.2}>
               <TiltCard peekCorner="top-left">
                 <GlassPanel>
-                  <GlassTile src="/images/rectangle-77.png" alt="" className="h-[150px] w-[274px]" />
+                  <GlassTile src="/images/rectangle-77.png" alt="" className="h-[150px] w-[274px]" priority />
                 </GlassPanel>
               </TiltCard>
             </FadeInUp>
@@ -106,7 +119,7 @@ export default function Hero() {
             <FadeInUp delay={0.25}>
               <TiltCard peekCorner="top-right" showPeekingBuddy={false}>
                 <GlassPanel className="flex flex-row items-center gap-2">
-                  <GlassTile src="/images/rectangle-78.png" alt="" className="h-24 w-40" />
+                  <GlassTile src="/images/rectangle-78.png" alt="" className="h-24 w-40" priority />
                   <div className="flex flex-col gap-1.5">
                     <GlassTile src="/images/rectangle-79.png" alt="" className="h-11 w-17" />
                     <GlassTile src="/images/rectangle-80.png" alt="" className="h-11 w-17" />
@@ -128,6 +141,7 @@ export default function Hero() {
         >
           *See the design from my desk
         </p>
+        <p className="mt-1.5 text-sm text-muted-600 md:hidden">Swipe through</p>
       </div>
 
       {/* Music player: compact round sound button at bottom-left on mobile

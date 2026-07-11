@@ -2,7 +2,7 @@
 
 import Image from "next/image";
 import { useState } from "react";
-import { motion } from "motion/react";
+import { motion, type PanInfo } from "motion/react";
 import DeskBuddy from "@/components/DeskBuddy";
 import GlassPanel from "@/components/GlassPanel";
 import GlassTile from "@/components/GlassTile";
@@ -10,6 +10,10 @@ import PeekingBuddy from "@/components/PeekingBuddy";
 import PetBuddy from "@/components/PetBuddy";
 
 type Side = "left" | "center" | "right";
+
+const ORDER: Side[] = ["left", "center", "right"];
+const SWIPE_OFFSET = 40;
+const SWIPE_VELOCITY = 400;
 
 const SPRING = { type: "spring" as const, stiffness: 200, damping: 22 };
 
@@ -58,6 +62,15 @@ const CARD_HEIGHT: Record<Side, number> = { left: 175, center: 0, right: 159 };
 export default function HeroMobileStack() {
   const [front, setFront] = useState<Side>("center");
 
+  const handleDragEnd = (_: unknown, info: PanInfo) => {
+    const idx = ORDER.indexOf(front);
+    if (info.offset.x < -SWIPE_OFFSET || info.velocity.x < -SWIPE_VELOCITY) {
+      setFront(ORDER[(idx + 1) % ORDER.length]);
+    } else if (info.offset.x > SWIPE_OFFSET || info.velocity.x > SWIPE_VELOCITY) {
+      setFront(ORDER[(idx - 1 + ORDER.length) % ORDER.length]);
+    }
+  };
+
   const groups: { side: Side; node: React.ReactNode }[] = [
     {
       side: "left",
@@ -82,7 +95,7 @@ export default function HeroMobileStack() {
             <Image src="/images/application-controls-active.svg" alt="" fill />
           </div>
           <div className="flex flex-row gap-2">
-            <GlassTile src="/images/rectangle-80.png" alt="" className="h-32 w-[124px]" />
+            <GlassTile src="/images/rectangle-80.png" alt="" className="h-32 w-[124px]" priority />
             <div className="flex flex-col gap-3">
               <GlassTile
                 src="/images/image-16.png"
@@ -141,24 +154,29 @@ export default function HeroMobileStack() {
         </div>
       </div>
 
-      {groups.map(({ side, node }) => {
-        const pose = poseFor(side, front);
-        return (
-          <div key={side} className="pointer-events-none absolute inset-0 flex items-center justify-center">
-            <motion.button
-              type="button"
-              onClick={() => setFront(side)}
-              animate={pose}
-              transition={SPRING}
-              style={{ zIndex: pose.zIndex }}
-              className="pointer-events-auto cursor-pointer"
-              aria-label={`Bring ${side} card to front`}
-            >
-              {node}
-            </motion.button>
-          </div>
-        );
-      })}
+      {/* Swipe left/right to cycle through the cards — replaces tapping a
+          side card directly, since a drag gesture reads more naturally as
+          "swipe through" on a touch device than a row of tap targets. */}
+      <motion.div
+        drag="x"
+        dragConstraints={{ left: 0, right: 0 }}
+        dragElastic={0.2}
+        onDragEnd={handleDragEnd}
+        role="group"
+        aria-label="Swipe through desk views"
+        className="absolute inset-0"
+      >
+        {groups.map(({ side, node }) => {
+          const pose = poseFor(side, front);
+          return (
+            <div key={side} className="pointer-events-none absolute inset-0 flex items-center justify-center">
+              <motion.div animate={pose} transition={SPRING} style={{ zIndex: pose.zIndex }}>
+                {node}
+              </motion.div>
+            </div>
+          );
+        })}
+      </motion.div>
     </div>
   );
 }
