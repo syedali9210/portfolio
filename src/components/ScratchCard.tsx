@@ -37,19 +37,7 @@ const NOISE_SRC = "/images/scratch/noise.png";
 const CARD_SHADOW =
   "0px 10px 20px 0px rgba(0,0,0,0.15), 0px 20px 40px 0px rgba(0,0,0,0.2), 0px 30px 60px 0px rgba(0,0,0,0.1), 0.5px 0.5px 0px 0px rgba(255,255,255,0.1) inset, 4px 4px 15px 0px rgba(255,255,255,0.05) inset";
 
-function CardMark() {
-  return (
-    <svg width="14" height="21" viewBox="0 0 14 21" className="shrink-0">
-      <path
-        d="M 14 0 L 14 7 L 7 7 L 0 0 Z M 0 7 L 7 7 L 14 14 L 7 14 L 7 21 L 0 14 Z"
-        fill="rgb(232, 232, 232)"
-      />
-    </svg>
-  );
-}
-
 interface ScratchCardProps {
-  forLabel?: string;
   caption?: string;
   // What's hiding under the foil — mounted only once the card is mostly
   // scratched off, so an entrance animation (or a video's first frame)
@@ -58,7 +46,6 @@ interface ScratchCardProps {
 }
 
 export default function ScratchCard({
-  forLabel = "For You",
   caption = "Experiment and prototype",
   reveal,
 }: ScratchCardProps) {
@@ -260,13 +247,6 @@ export default function ScratchCard({
           boxShadow: CARD_SHADOW,
         }}
       >
-        <div className="flex w-full items-center justify-between px-5">
-          <CardMark />
-          <p className="font-open-runde text-[15px] font-medium leading-[18px] text-[#9ba1a5] opacity-80">
-            {forLabel}
-          </p>
-        </div>
-
         <div className="relative z-[2] min-h-0 w-full flex-1 px-5">
           <div
             ref={surfaceRef}

@@ -60,8 +60,8 @@ export default function MySpace() {
           </p>
           <SwipeableCards
             cards={[
-              <ScratchCard key="cube" forLabel="For You" reveal={<CubeReveal />} />,
-              <ScratchCard key="navbar" forLabel="For You" reveal={<NavBarReveal />} />,
+              <ScratchCard key="cube" reveal={<CubeReveal />} />,
+              <ScratchCard key="navbar" reveal={<NavBarReveal />} />,
             ]}
           />
         </div>
